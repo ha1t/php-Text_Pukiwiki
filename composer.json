@@ -1,0 +1,11 @@
+{
+    "name": "Text/Pukiwiki",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+    },
+    "authors": [
+        {
+            "name": "ha1t"
+        }
+    ]
+}

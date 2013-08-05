@@ -8,12 +8,7 @@
 
 ini_set('include_path', ini_get('include_path') . ':' . dirname(dirname(__FILE__)));
 
-/**
- * PukiWikiParser
- *
- * @package Text_PukiWiki
- */
-class Text_PukiWiki
+class Text_Pukiwiki
 {
     const VERSION = "0.1.2";
 
@@ -34,12 +29,7 @@ class Text_PukiWiki
     var $linkwords = array();
     var $base_url = "";
 
-    /**
-     * Text_PukiWiki
-     *
-     * @access public
-     */
-    function Text_PukiWiki()
+    public function __construct()
     {
         if ($this->use_plugin) {
             include_once dirname(__FILE__) . '/PukiWiki/PluginHandler.php';

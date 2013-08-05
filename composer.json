@@ -10,5 +10,8 @@
         {
             "name": "ha1t"
         }
-    ]
+    ],
+    "autoload": {
+        "classmap": ["src/Text"]
+    }
 }

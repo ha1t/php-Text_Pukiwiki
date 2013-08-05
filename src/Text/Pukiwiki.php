@@ -17,17 +17,16 @@ class Text_Pukiwiki
      * @var     bool
      * @access  private
      */
-    var $use_plugin = true;
+    private $use_plugin = true;
 
     /**
      * $h_start_level
      * @var     int
-     * @access  protected
      */
-    var $h_start_level = 3;
+    private $h_start_level = 3;
 
-    var $linkwords = array();
-    var $base_url = "";
+    private $linkwords = array();
+    private $base_url = "";
 
     public function __construct()
     {
@@ -36,14 +35,14 @@ class Text_Pukiwiki
         }
     }
 
-    function setLinkWords($list)
+    public function setLinkWords($list)
     {
         if (is_array($list)) {
             $this->linkwords = $list;
         }
     }
 
-    function setBaseUrl($url)
+    public function setBaseUrl($url)
     {
         $this->base_url = $url;
     }
@@ -55,7 +54,7 @@ class Text_Pukiwiki
      * @access public
      * @param string $src
      */
-    function toHtml($src)
+    public function toHtml($src)
     {
         $buf = array();
         $lines = explode("\n", rtrim($src));
@@ -130,7 +129,7 @@ class Text_Pukiwiki
      *
      * @access private
      */
-    function takeBlock(&$lines, $regexp)
+    private function takeBlock(&$lines, $regexp)
     {
         $buf = array();
         
@@ -152,7 +151,7 @@ class Text_Pukiwiki
      *
      * @access private
      */
-    function parseTable(&$lines, $regexp)
+    private function parseTable(&$lines, $regexp)
     {
         $block = explode("\n", $this->takeBlock($lines, $regexp));
         $table = "<table>\n";
@@ -170,7 +169,7 @@ class Text_Pukiwiki
         return $table;
     }
 
-    function parseP(&$lines, $regexp)
+    private function parseP(&$lines, $regexp)
     {
         $value = explode("\n", $this->takeBlock($lines, $regexp));
         
@@ -188,7 +187,7 @@ class Text_Pukiwiki
      * @param string $line
      * @param array  $word_list
      */
-    function parseInline($line)
+    private function parseInline($line)
     {
         $line = htmlspecialchars($line, ENT_QUOTES);
 
@@ -246,7 +245,7 @@ class Text_Pukiwiki
         return $line;
     }
 
-    function parseH($line)
+    private function parseH($line)
     {
         preg_match("/^(\*{1,4})(.*)/", $line, $matches);
 
@@ -258,7 +257,7 @@ class Text_Pukiwiki
 
     }
 
-    function parsePre(&$lines)
+    private function parsePre(&$lines)
     {
         $value = htmlspecialchars($this->takeBlock($lines, "/^\s/"), ENT_QUOTES);
         if (!empty($value)) {
@@ -270,7 +269,7 @@ class Text_Pukiwiki
         return $line;
     }
 
-    function parseQuote(&$lines)
+    private function parseQuote(&$lines)
     {
         $value = $this->takeBlock($lines, "/^>/");
         return "<blockquote><p>\n{$value}\n</p></blockquote>";
@@ -279,7 +278,7 @@ class Text_Pukiwiki
     /**
      * parseList
      */
-    function parseList($type, &$lines, $regexp)
+    private function parseList($type, &$lines, $regexp)
     {
         $buf = array();
         $buf[] = "<{$type}>";
@@ -304,8 +303,7 @@ class Text_Pukiwiki
         return implode("\n", $buf);
     }
 
-    //{{{ parseDl
-    function parseDl(&$lines, $regexp)
+    private function parseDl(&$lines, $regexp)
     {
         $buf = array();
         $buf[] = "<dl>";
@@ -328,7 +326,6 @@ class Text_Pukiwiki
         
         return implode("\n", $buf);
     }
-    //}}}
 
     //{{{ autoLink
     /**
@@ -338,7 +335,7 @@ class Text_Pukiwiki
      * @param string $mes
      * @see http://mt.no22.tk/2006/01/29-22.php
      */
-    function autoLink($mes) {
+    private function autoLink($mes) {
         $strary = preg_split("/(<[\/\!]*?[^<>]*?>)/",
             $mes,
             -1,
@@ -363,7 +360,7 @@ class Text_Pukiwiki
     }
     //}}}
 
-    function parsePlugin($line, $src)
+    private function parsePlugin($line, $src)
     {
         $match_result = preg_match('/^#(.*?)\((.*?)\)/', $line, $result); 
         if ($match_result === 1) {
@@ -385,7 +382,7 @@ class Text_Pukiwiki
         }
     }
 
-    function escapeLink($text)
+    private function escapeLink($text)
     {
         global $escapeLink_replace_list;
         $preg_func = create_function('$matches','
@@ -409,7 +406,7 @@ class Text_Pukiwiki
         );
     }
 
-    function unescapeLink($text, $linklist)
+    private function unescapeLink($text, $linklist)
     {
         if (count($linklist) == 0) {
             return $text;

@@ -17,19 +17,18 @@ class Text_Pukiwiki
      * @var     bool
      * @access  private
      */
-    private $use_plugin = true;
+    private $use_plugin = false;
 
-    /**
-     * $h_start_level
-     * @var     int
-     */
+    /** @param int $h_start_level */
     private $h_start_level = 3;
 
     private $linkwords = array();
     private $base_url = "";
 
-    public function __construct()
+    public function __construct($use_plugin = false)
     {
+        $this->use_plugin = $use_plugin;
+
         if ($this->use_plugin) {
             include_once dirname(__FILE__) . '/PukiWiki/PluginHandler.php';
         }
@@ -51,7 +50,6 @@ class Text_Pukiwiki
     /**
      * toHtml
      *
-     * @access public
      * @param string $src
      */
     public function toHtml($src)
@@ -59,7 +57,10 @@ class Text_Pukiwiki
         $buf = array();
         $lines = explode("\n", rtrim($src));
         array_walk($lines, 'rtrim');
+        reset($lines);
 
+        //var_dump($lines, current($lines));
+        //current($lines);
         while(current($lines) !== false) {
 
             $line = current($lines);
@@ -106,9 +107,7 @@ class Text_Pukiwiki
                     break;
                 default:
                     $buf[] = $this->parseP($lines, '/\A(?![\*\s>:\-\+]|----|\z)/');
-
             }
-
         }
 
         $html = implode("\n", $buf);
@@ -124,17 +123,12 @@ class Text_Pukiwiki
     }
     //}}}
 
-    /**
-     * takeBlock
-     *
-     * @access private
-     */
     private function takeBlock(&$lines, $regexp)
     {
         $buf = array();
-        
+
         while($line = current($lines)) {
-            
+
             if (preg_match($regexp, $line)) {
                 $buf[] = preg_replace($regexp, '', array_shift($lines), 1);
              } else {
@@ -172,7 +166,7 @@ class Text_Pukiwiki
     private function parseP(&$lines, $regexp)
     {
         $value = explode("\n", $this->takeBlock($lines, $regexp));
-        
+
         foreach ($value as $key => $line) {
             $value[$key] = $this->parseInline($line);
         }
@@ -183,7 +177,6 @@ class Text_Pukiwiki
     /**
      * parseInline
      *
-     * @access protected
      * @param string $line
      * @param array  $word_list
      */
@@ -251,7 +244,7 @@ class Text_Pukiwiki
 
         $level = $this->h_start_level + strlen($matches[1]) -1;
         $text = trim($this->parseInline($matches[2]));
-        
+
         $key = "k" . substr(md5($text), 0, 7);
         return "<h{$level} id=\"{$key}\">{$text}</h{$level}>";
 
@@ -265,7 +258,7 @@ class Text_Pukiwiki
         } else {
             $line = "";
         }
-        
+
         return $line;
     }
 
@@ -307,7 +300,7 @@ class Text_Pukiwiki
     {
         $buf = array();
         $buf[] = "<dl>";
-        
+
         $value = explode("\n", $this->takeBlock($lines, $regexp));
 
         foreach ($value as $line) {
@@ -321,17 +314,15 @@ class Text_Pukiwiki
             $buf[] = "<dt>{$list[0]}</dt>";
             $buf[] = "<dd>{$list[1]}</dd>";
         }
-        
+
         $buf[] = "</dl>";
-        
+
         return implode("\n", $buf);
     }
 
-    //{{{ autoLink
     /**
      * autoLink
      *
-     * @access private
      * @param string $mes
      * @see http://mt.no22.tk/2006/01/29-22.php
      */
@@ -358,18 +349,17 @@ class Text_Pukiwiki
 
         return implode("", $strary);
     }
-    //}}}
 
     private function parsePlugin($line, $src)
     {
-        $match_result = preg_match('/^#(.*?)\((.*?)\)/', $line, $result); 
+        $match_result = preg_match('/^#(.*?)\((.*?)\)/', $line, $result);
         if ($match_result === 1) {
           $plugin_name = $result[1];
           $plugin_argument = $result[2];
         }
 
         if ($match_result === 0) {
-          $match_result = preg_match('/^#(\w+)/', $line, $result); 
+          $match_result = preg_match('/^#(\w+)/', $line, $result);
           $plugin_name = $result[1];
           $plugin_argument = '';
         }

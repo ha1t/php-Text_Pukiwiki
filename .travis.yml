@@ -1,0 +1,11 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+
+script:
+  - find . -type f -name *.php | xargs -n1 php -l
+  - composer install
+  - phpunit --coverage-text -c ./tests/phpunit.xml
+

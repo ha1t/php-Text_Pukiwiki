@@ -3,4 +3,5 @@ php:
   - 5.3
   - 5.4
 script: find . -type f -name *.php | xargs -n1 php -l
+script: composer install
 script: phpunit --coverage-text -c ./tests/phpunit.xml

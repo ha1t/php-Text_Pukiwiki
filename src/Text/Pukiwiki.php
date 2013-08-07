@@ -5,21 +5,14 @@
  * @category Text
  * @package Text_PukiWiki
  */
-
-ini_set('include_path', ini_get('include_path') . ':' . dirname(dirname(__FILE__)));
-
 class Text_Pukiwiki
 {
     const VERSION = "0.1.2";
 
-    /**
-     * $use_plugin
-     * @var     bool
-     * @access  private
-     */
+    /** @var bool $use_plugin */
     private $use_plugin = false;
 
-    /** @param int $h_start_level */
+    /** @var int $h_start_level */
     private $h_start_level = 3;
 
     private $linkwords = array();
@@ -30,7 +23,7 @@ class Text_Pukiwiki
         $this->use_plugin = $use_plugin;
 
         if ($this->use_plugin) {
-            include_once dirname(__FILE__) . '/PukiWiki/PluginHandler.php';
+            include_once dirname(__FILE__) . '/Pukiwiki/PluginHandler.php';
         }
     }
 

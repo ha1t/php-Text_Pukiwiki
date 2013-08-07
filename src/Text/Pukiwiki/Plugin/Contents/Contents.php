@@ -1,9 +1,5 @@
 <?php
-/**
- * Text_PukiWiki_Plugin_Contents
- *
- */
-class Text_PukiWiki_Plugin_Contents
+class Text_PukiWiki_Plugin_Contents implements Plugin
 {
     /**
      * load

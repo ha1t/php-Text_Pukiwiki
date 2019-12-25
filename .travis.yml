@@ -9,6 +9,6 @@ php:
 
 script:
   - find . -type f -name *.php | xargs -n1 php -l
-  - composer install
+  - composer install --prefer-dist
   - ./vendor/bin/phpunit -v --coverage-text
 

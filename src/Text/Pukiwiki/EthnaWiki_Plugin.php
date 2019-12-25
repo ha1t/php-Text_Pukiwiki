@@ -1,8 +1,6 @@
 <?php
 /**
  * EthnaWiki_Plugin.php
- *
- * @author TSURUOKA Naoya <tsuruoka@labs.cybozu.co.jp>
  */
 
 require_once 'Plugin.php';
@@ -10,7 +8,6 @@ require_once 'Plugin.php';
 /**
  * Text_PukiWiki_EthnaWikiPlugin
  *
- * @author TSURUOKA Naoya <tsuruoka@labs.cybozu.co.jp>
  */
 class Text_PukiWiki_EthnaWikiPlugin extends Text_PukiWiki_Plugin
 {
@@ -32,7 +29,7 @@ class Text_PukiWiki_EthnaWikiPlugin extends Text_PukiWiki_Plugin
      */
     var $backend;
 
-    function Text_PukiWiki_EthnaWikiPlugin($r_src)
+    public function __construct($r_src)
     {
         $this->ctl = Ethna_Controller::getInstance();
         $this->backend = $this->ctl->getBackend();
@@ -60,7 +57,7 @@ class Text_PukiWiki_EthnaWikiPlugin extends Text_PukiWiki_Plugin
 
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
             $tmp_vars = $_GET;
-        } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        } elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
             $tmp_vars = $_POST;
         }
 
@@ -101,6 +98,4 @@ class Text_PukiWiki_EthnaWikiPlugin extends Text_PukiWiki_Plugin
             return $this->db->getOne($query, array($pagename));
         }
     }
-
 }
-?>
